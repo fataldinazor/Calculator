@@ -1,30 +1,113 @@
 'use strict'
 
-const numberBtns=document.querySelectorAll('.number');
-const operatorBtns=document.querySelectorAll('.operator');
+let firstOperand='';
+let secondOperand='';
+let currentOperator=null;
+let shouldReset=false;
 
-const lowerScreen=document.querySelector('.lowerScreen');
-const upperScreen=document.querySelector('.lowerScreen');
+const numberBtn=document.querySelectorAll('.number');
+const operatorBtn=document.querySelectorAll('.operator');
+const equalBtn=document.querySelector('.equal');
+const clearBtn=document.querySelector('.clear');
+const deleteBtn=document.querySelector('.delete');
+const dotBtn=document.querySelector('.dot');
+const currentScreen=document.querySelector('.lowerScreen');
+const previousScreen=document.querySelector('.upperScreen');
 
-let firstNum='';
-let secondNum='';
-let operator='';
+
+equalBtn.addEventListener('click',evaluate);
+deleteBtn.addEventListener('click',deleteNumber);
+clearBtn.addEventListener('click',clearCalc);
+dotBtn.addEventListener('click',appendDot)
+
+function appendDot(){
+    if(shouldReset)resetScreen();
+    if(currentScreen.textContent==="")
+    currentScreen.textContent='0';
+
+    if (currentScreen.textContent.includes('.')) return;
+    else 
+        currentScreen.textContent+='.';
+}
+
+function clearCalc(){
+    firstOperand='';
+    secondOperand='';
+    currentOperator=null;
+    shouldReset=false;
+
+    currentScreen.textContent='0';
+    previousScreen.textContent='';
+}
+
+function deleteNumber(){
+    let newText=currentScreen.textContent;
+    newText=newText.slice(0,-1);
+    currentScreen.textContent=newText;
+}
 
 
+numberBtn.forEach(btn=>{
+    btn.addEventListener('click',()=>appendNumber(btn.textContent))
+})
+
+operatorBtn.forEach(btn=>{
+    btn.addEventListener('click',()=>setOperation(btn.textContent));
+})
+
+equalBtn.addEventListener('click',()=>evaluate)
+
+function appendNumber(number){
+    if(currentScreen.textContent==='0'|| shouldReset) 
+    resetScreen();
+    currentScreen.textContent+=number;
+}
+
+function resetScreen(){
+    currentScreen.textContent='';
+    shouldReset=false;
+}
+
+function setOperation(operand){
+    if(currentOperator!==null)evaluate()
+
+    firstOperand=Number(currentScreen.textContent);
+    currentOperator=operand;
+    previousScreen.textContent=`${firstOperand} ${currentOperator}`;
+    shouldReset=true;
+}
+
+function evaluate(){
+    if(currentOperator===null||shouldReset)return
+
+    secondOperand=currentScreen.textContent;
+    previousScreen.textContent+=` ${secondOperand}`;
+    let result=round(operate(Number(firstOperand),Number(secondOperand),currentOperator));
+    resetScreen();
+    currentScreen.textContent=result;
+
+    firstOperand=currentScreen.textContent;
+    currentOperator=null;
+    shouldReset=true;
+}
+
+function round(number){
+    return (Math.round(number*1000))/1000;
+}
 
 function operate(firstNum,secondNum,operator){
     let result;
     switch(operator){
-        case add:
+        case '+':
             result=add(firstNum,secondNum);
             break;
-        case sub:
+        case '-':
             result=sub(firstNum,secondNum);
             break;
-        case mul:
+        case 'x':
             result=mul(firstNum,secondNum);
             break;
-        case div:
+        case '/':
             result=div(firstNum,secondNum);
             break;            
     }
@@ -41,7 +124,7 @@ function sub(firstNum,secondNum){
 }
 
 function div(firstNum,secondNum){
-    if(firstNum===0)
+    if(secondNum===0)
         return ('Not Defined');
     else
         return firstNum/secondNum;
