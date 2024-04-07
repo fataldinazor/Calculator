@@ -14,6 +14,23 @@ const dotBtn=document.querySelector('.dot');
 const currentScreen=document.querySelector('.lowerScreen');
 const previousScreen=document.querySelector('.upperScreen');
 
+document.addEventListener('keydown',function(e){
+    let operations=['+','-','*','/'];
+    console.log(e);
+    if(e.which>=48&&e.which<=57 || e.which>=96 && e.which<=105)
+    appendNumber(e.key);
+    if (operations.includes(e.key))
+    setOperation(e.key);
+    if(e.key==="Backspace"||e.key==='Delete')
+    deleteNumber();
+    if(e.which===115)
+    appendDot();
+    if(e.key==='=' || e.key==='Enter')
+    evaluate();
+})
+
+
+
 
 equalBtn.addEventListener('click',evaluate);
 deleteBtn.addEventListener('click',deleteNumber);
@@ -104,7 +121,7 @@ function operate(firstNum,secondNum,operator){
         case '-':
             result=sub(firstNum,secondNum);
             break;
-        case 'x':
+        case '*':
             result=mul(firstNum,secondNum);
             break;
         case '/':
@@ -133,3 +150,6 @@ function div(firstNum,secondNum){
 function mul(firstNum,secondNum){
     return firstNum*secondNum;
 }
+
+const footer=document.querySelector('footer')
+footer.textContent+=(new Date()).getFullYear();
