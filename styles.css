@@ -38,15 +38,11 @@ body{
     flex:1;
 }
 .upperScreen, .lowerScreen{
-    /* outline:1px solid red; */
     flex:1;
     text-align: right;
-    /* padding:10px; */
 }
 .lowerScreen{
-    /* outline: 1px solid red; */
     height: 60%;
-    /* display: flex; */
     align-items: flex-end;
     justify-content: flex-end;
 
@@ -71,7 +67,6 @@ button{
 }
 
 .upperButtons{
-    /* outline: 1px solid black; */
     display: flex;
     gap:10px;
     flex:1;
@@ -91,7 +86,6 @@ button{
     display: flex;
     flex-wrap: wrap;
     gap:6px;
-    /* flex-direction: column; */
     margin-top: 0;
     min-width: 100%;
     min-height: 80%;

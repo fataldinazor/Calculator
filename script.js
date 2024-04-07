@@ -29,9 +29,6 @@ document.addEventListener('keydown',function(e){
     evaluate();
 })
 
-
-
-
 equalBtn.addEventListener('click',evaluate);
 deleteBtn.addEventListener('click',deleteNumber);
 clearBtn.addEventListener('click',clearCalc);
